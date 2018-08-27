@@ -81,3 +81,5 @@ mvn compile。将执行compile这个phase，maven本身不知道如何执行comp
 
 mvn常用的标准插件。clean插件对应执行的phase为clean，compiler对应compile，surefire对应test，jar对应package。
 mvn的标准插件比如compiler是自带的无需声明，当我们需要另外的插件时候，需要在pom文件中声明。
+
+静态字段和方法
