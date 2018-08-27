@@ -1,0 +1,22 @@
+Mac自带了git程序，我们在GitHub上创建了一个免费的远程仓库，把Mac的密钥添加到GitHub设置中，设置好邮件。
+
+一般来说，初次使用，我们本地什么也没有，要从GitHub上创建好仓库。然后使用。
+我们到Mac上指定的目录，使用git clone git@github.com:MaxFranks/Javalearn.git这个命令。就可以把GitHub上Javalearn这个远程仓库，拷贝下来成为我们的本地仓库。
+接着我们可以修改本地的这个仓库。然后同步到远程上去。
+这个是远程拷贝来本地。
+
+接下来是从本地上传到远程。就是我们本地已经用git init创建并且在使用本地仓库。远程有一个空仓库。
+git remote add origin git@github.com:MaxFranks/Javalearn.git这个命令，可以把本地的Javalearn.git关联到MaxFranks的GitHub仓库。
+然后我们使用git push -u origin master这个命令，把本地库的所有内容推送到远程库上（就是maxfranks的github仓库）。
+由于远程库是空的，我们第一次推送master分支时，加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令，直接git push origin master。
+
+接下来是git的一些常用命令。
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>
+创建+切换分支：git checkout -b <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
+git add 添加文件
+git commit -m "注释" 提交文件添加注释
+git merge dev 合并到dev分支

@@ -1,0 +1,83 @@
+Java学习笔记20180818
+
+冒泡排序：
+		for(int x = 0; x < ns.length; x++) {
+			for(int y = x+1;y < ns.length; y++) {
+				int tmp;
+				if(ns[x] > ns[y]) {
+					tmp = ns[y];
+					ns[y] = ns[x];
+					ns[x] = tmp;
+				}
+			}
+		}
+对一组数组，进行从小到大的排序。先取第一位，然后和后面的每位数依次对比，小的留住，再取第二位，和后面的数对比，小的留住。以此类推，最后会修改数组本身，变成一个从小到大排序的数组。
+
+构造方法：
+构造方法可以在创建对象实例时候初始化对象实例，构造方法名就是类名，构造方法的参数没有限制，构造方法也没有返回值和void，必须用new操作符调用构造方法。
+构造方法如果没写，编译器会自动生成一个默认构造方法，无参数，无执行语句，如果用户自定义了构造方法，编译器就不再自动创建默认构造方法。
+可以在一个构造方法里面调用其他构造方法，用this调用。
+public class PersonDemo {
+	private String name;
+	private int age;
+	private double height;
+	public PersonDemo(String name,int age,double height) {
+		this.name = name;
+		this.age = age;
+		this.height = height;
+		System.out.println("my name is " + name + " and " + age + " years old and " + height +"cm");
+	}
+	public PersonDemo() {
+		this("UnKnown",18,170.00);
+	}
+}
+
+方法重载和方法覆写区别：
+就是overload和override
+方法重载overload，指的是多个方法的方法名相同但是各自的参数不同。返回值通常都是相同的。方便调用相同功能的方法，细节不一样。
+下面是方法重载的一个体现。要设置一个人的姓名，可以设置完整的，也可以设置姓，名。
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setName(String FirstName,String LastName) {
+		this.name = FirstName + " " + LastName;
+	}
+override方法覆写，一般是指子类覆写父类的方法，如果方法的签名不同，那就不是override，是创建了一个新的方法。
+
+继承方法:
+父类的private字段是私有的，子类无法直接用this访问，如果想子类访问，把private属性修改为protected属性。
+子类的构造方法的第一行语句必须调用super。如果没有super，就是父类没有自定义的构造方法，只有默认的super，那子类的super也会自动生成。如果父类有自定义的构造方法，那么子类的就必须显示的调用父类的构造方法。
+
+abstract类和interface接口。
+抽象类，指的就是类中有抽象方法，没有实现代码，只有一个方法名，他的子类都有这个方法，但是具体的实现代码是不一样的，比如人有跑这个动作，那么学生可以跑，老师可以跑，医生也可以跑，那么跑这个动作，在人的类中，就可以定义为一个抽象类，不用写实现代码，只需要方法名，子类继承父类之后，会写不同的实现代码，新建对象的时候，父类创建之后指向不同的子类实例就好了，就是new学生，老师，医生等。一个抽象类只有抽象方法的时候，没有其他代码，那么他就可以是一个接口。接口可以定于default方法，这个方法可以return一个0，还有就是implements这个接口之后，可以不用这个方法。可以implements多个interface。而abstract用来继承的时候，只能单继承，就是extends一个class。比如student extends了person，那他就不能extends其他class，但是如果person是interface，那他就可以implements多个interface。interface之间也可以继承自另一个interface，就是用extends，相当于扩展了接口的方法。
+我们需要合理设计interface和abstract class的关系，一般把公共的业务逻辑放在abstract class，接口层次代表抽象程度。
+
+Maven基础：
+maven是一个Java项目的管理和构建工具，提供了标准化的项目结构，标准化构建流程（编译，打包，发布。。。），依赖管理。
+使用maven管理的普通Java项目。
++-src
+| +-main
+|   +-java        J源码ava
+|   +-resources   资源文件
+| +-test
+|   +-java        Java测试源码
+|   +-resources   测试资源文件
++-target          编译输出
++-pom.xml         项目描述文件
+
+maven的构建流程
+clean-->compile-->test-->package
+分别对应：删除所有编译生成的文件。编译源码，编译测试源码。运行测试。打包为jar/war。
+maven的生命周期（lifecycle），由一系列阶段（phase）构成。
+例如，一个生命周期，可以包含clean，compile，test三个phase组成。有一些phase依赖于其他phase，有一些是独立的。例如，要执行test，就必须执行compile，要执行clean，就不需要执行任何其他的phase。
+使用maven构建项目，就是执行指定的phase。
+例如，mvn compile就是执行compile这个phase，mvn clean test将执行clean，compile，test这些phase。
+mvn执行一个phase又会触发一个或者多个goal，例如compile这个phase，对应执行的goal为compiler：compile。test这个phase为compiler：testcompile，surefile：test。
+maven的lifecycle，phase，goal。使用maven构建项目就是执行lifecycle，执行lifecycle就是按照顺序执行一系列的phase，每执行一个phase，就是执行该phase绑定的若干goal，goal是最小任务单元。
+
+实际上mvn是调用不同的插件（plugin）来构建项目。
+
+mvn compile。将执行compile这个phase，maven本身不知道如何执行compile，是调用compiler这个插件来执行compile，compiler插件执行和compile关联的compiler：compile这个goal。
+
+mvn常用的标准插件。clean插件对应执行的phase为clean，compiler对应compile，surefire对应test，jar对应package。
+mvn的标准插件比如compiler是自带的无需声明，当我们需要另外的插件时候，需要在pom文件中声明。
