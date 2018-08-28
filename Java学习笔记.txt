@@ -82,4 +82,24 @@ mvn compile。将执行compile这个phase，maven本身不知道如何执行comp
 mvn常用的标准插件。clean插件对应执行的phase为clean，compiler对应compile，surefire对应test，jar对应package。
 mvn的标准插件比如compiler是自带的无需声明，当我们需要另外的插件时候，需要在pom文件中声明。
 
-静态字段和方法
+静态字段和方法：
+如果我们用static修饰一个字段，那么这个字段就成为静态字段，普通字段在每个实例中都有自己独立的一个空间，静态字段只有一个共享空间，所有实例都共享该字段。
+例如有一个person类，实例有2个，小明和小红，他们都有name和age字段，那么这两个字段在自己的实例中，都有各自的储存空间。而static的字段比如number，则是共享的一个存储空间。可以理解为所有实例共享的是其实是person类的number字段，就是class本身的字段。所以我们推荐用类名来访问静态字段，而不是用实例变量来访问静态字段。比如要修改number的值。应该使用person.number来访问修改，而不是实例xiaohong.number或者xiaoming.bumber。
+调用实例方法必须通过实例变量，比如xiaohong.act，但是调用静态方法，不需要实例变量，直接用类名就可以，比如person.act。
+静态方法不能访问this变量，因为他根本不需要实例变量，也不能访问实例字段，可以访问静态字段。
+静态方法通常用于工具类，比如arrays.sort，math.random，也常用于辅助方法。
+
+java核心类：
+string类：
+contains方法，返回是否包含子串。indexof方法，返回指定字符串的索引位置。lastindexof和indexof类似，不过他是从末尾开始找。startswith返回是否某个字符串开始，类似endswith是否某个字符串结束。
+trim方法可以移除首位空白字符，比如空格，\t,\r,\n。这里的trim方法，不改变字符串的内容，而是返回新字符串。
+还可以用substring方法提取子串，同样也没有改变字符串内容。 
+还有touppercase，tolowercase，大小写转换。
+还有replace方法，用‘和“区分，分别代表替换一个字符，或者一串字符。replaceall是用正则表达式来替换字符串。
+split分割字符串，jion拼接字符串。
+要把任意数据转换为string，可以使用提供的valueof方法，可以传入int，boolean，object。
+如果要把string转换为其他类型，可以使用static int integer.parseint（string），或者static integer integer.valueof（string）。这里要注意string是不可变类型，当我们调用tochararray的时候，其实复制了一遍char数组，所以我们修改返回后的char数组，不会影响到原来的string数组。
+需要把string转为byte【】时候，可以用byte【】 getbyte（string），这里string就是编码格式，比如utf-8。
+把一个int转换为integer。或者一个string转换为int。
+Integer n1 = Integer.valueOf(100),Integer n1 = Integer.valueOf("100")
+integer转换为int。int a1 = n1.intValue()
