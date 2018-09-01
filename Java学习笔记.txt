@@ -64,6 +64,41 @@ maven是一个Java项目的管理和构建工具，提供了标准化的项目�
 |   +-resources   测试资源文件
 +-target          编译输出
 +-pom.xml         项目描述文件
+一个普通的pom文件：
+***********************************************************************************
+<project>//根元素是project
+
+<modelVersion></modelVersion>
+<groupId></groupId>//-------------项目或者组织的唯一标志，并且配置时生成路径也是由此生成，如org.myproject.mojo生成的相对路径为：/org/myproject/mojo
+<artifactId></artifactId>//-------项目的通用名称
+<version></version>//-------------项目的版本, 这三个参数唯一定位一个jar包。
+<packaging>jar</packaging>//打包机制，如pom,jar,maven-plugin,ejb,war,ear,rar,par
+
+<properties>
+//为pom定义一些常量，在pom中的其它地方可以直接引用
+<java.version>1.8</java.version>//jdk使用1.8版本
+<maven.compiler.source>1.8</maven.compiler.source>//Java源码使用1.8格式
+<maven.compiler.target>1.8</maven.compiler.target>//编译后的class用1.8格式
+</properties>
+
+<dependecies>
+//项目中的所需的额外依赖列表，比如
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>3.8.1</version>//使用3.8.1的junit版本。
+    <scope>test</scope>
+</dependency>
+</dependecies>
+
+</project>
+***********************************************************************************
+maven的依赖关系：
+scope，说明，示例
+compile ，编译时候用到该jar包（默认），commons-logging
+test，编译test时候需要用到该jar包，junta
+runtime，编译时候不需要，但运行时候需要用到，log4j
+provided，编译时候需要用到，运行时候由jdk或者某个服务器提供，servlet-api。
 
 maven的构建流程
 clean-->compile-->test-->package
@@ -75,12 +110,12 @@ maven的生命周期（lifecycle），由一系列阶段（phase）构成。
 mvn执行一个phase又会触发一个或者多个goal，例如compile这个phase，对应执行的goal为compiler：compile。test这个phase为compiler：testcompile，surefile：test。
 maven的lifecycle，phase，goal。使用maven构建项目就是执行lifecycle，执行lifecycle就是按照顺序执行一系列的phase，每执行一个phase，就是执行该phase绑定的若干goal，goal是最小任务单元。
 
+maven的lifecycle，phase，goal是三个基本的概念，我们使用maven构建项目，就是执行lifecycle，执行lifecycle就是按顺序执行一系列的phase，执行phase就是执行该phase绑定的若干个goal，goal是最小任务单元。 
 实际上mvn是调用不同的插件（plugin）来构建项目。
-
-mvn compile。将执行compile这个phase，maven本身不知道如何执行compile，是调用compiler这个插件来执行compile，compiler插件执行和compile关联的compiler：compile这个goal。
-
+当我们执行mvn compile这个phase的时候，maven本身不知道如何执行compile，是调用compiler这个插件来执行compile，compiler插件执行和compile关联的compiler:compile这个goal。
 mvn常用的标准插件。clean插件对应执行的phase为clean，compiler对应compile，surefire对应test，jar对应package。
 mvn的标准插件比如compiler是自带的无需声明，当我们需要另外的插件时候，需要在pom文件中声明。
+例如需要创建一个可执行的jar包，同时把所有依赖的jar包打包到自己最终生成的这个jar包里，就可以使用maven-shade-plugin这个插件。
 
 静态字段和方法：
 如果我们用static修饰一个字段，那么这个字段就成为静态字段，普通字段在每个实例中都有自己独立的一个空间，静态字段只有一个共享空间，所有实例都共享该字段。
@@ -103,3 +138,12 @@ split分割字符串，jion拼接字符串。
 把一个int转换为integer。或者一个string转换为int。
 Integer n1 = Integer.valueOf(100),Integer n1 = Integer.valueOf("100")
 integer转换为int。int a1 = n1.intValue()
+
+
+8月31号定的学习目标，把异常处理-断言和日志复习一遍，接着复习单元测试，maven，接着是jdbc。trycatch。
+
+断言：断言是一种调试方式，断言失败会抛出assertionerror，只能在开发和测试阶段启用断言，对可恢复的错误不能使用断言，而应该抛出异常，断言很少被使用，更好的方法是编写单元测试。
+double x = abs(-123.45);//自定义一个abs方法为取绝对值。
+assert x >= 0 : "x must >= 0 but x = " +x;//因为这里x取了绝对值，所以都能通过，没有异常，如果x是负数，就会触发assertion异常。
+Java的日志：logging，为了取代sysout方法，可以设置输出样式，级别，禁止输出某些级别，可以被重定向到文件，可以按包名控制级别。sysout无法做到这些。
+jdk内置了java.util.logging，但是这个日志系统用的很少，更常用的是commonslogging。
