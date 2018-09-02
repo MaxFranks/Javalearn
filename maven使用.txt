@@ -1,0 +1,79 @@
+
+Maven基础：
+maven是一个Java项目的管理和构建工具，提供了标准化的项目结构，标准化构建流程（编译，打包，发布。。。），依赖管理。
+使用maven管理的普通Java项目。
++-src
+| +-main
+|   +-java        J源码ava
+|   +-resources   资源文件
+| +-test
+|   +-java        Java测试源码
+|   +-resources   测试资源文件
++-target          编译输出
++-pom.xml         项目描述文件
+一个普通的pom文件：
+***********************************************************************************
+<project>//根元素是project
+
+<modelVersion></modelVersion>
+<groupId></groupId>//-------------项目或者组织的唯一标志，并且配置时生成路径也是由此生成，如org.myproject.mojo生成的相对路径为：/org/myproject/mojo
+<artifactId></artifactId>//-------项目的通用名称
+<version></version>//-------------项目的版本, 这三个参数唯一定位一个jar包。
+<packaging>jar</packaging>//打包机制，如pom,jar,maven-plugin,ejb,war,ear,rar,par
+
+<properties>
+//为pom定义一些常量，在pom中的其它地方可以直接引用
+<java.version>1.8</java.version>//jdk使用1.8版本
+<maven.compiler.source>1.8</maven.compiler.source>//Java源码使用1.8格式
+<maven.compiler.target>1.8</maven.compiler.target>//编译后的class用1.8格式
+</properties>
+
+<dependecies>
+//项目中的所需的额外依赖列表，比如
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>3.8.1</version>//使用3.8.1的junit版本。
+    <scope>test</scope>
+</dependency>
+</dependecies>
+
+</project>
+***********************************************************************************
+maven的依赖关系：
+scope，说明，示例
+compile ，编译时候用到该jar包（默认），commons-logging
+test，编译test时候需要用到该jar包，junta
+runtime，编译时候不需要，但运行时候需要用到，log4j
+provided，编译时候需要用到，运行时候由jdk或者某个服务器提供，servlet-api。
+
+maven的构建流程
+clean-->compile-->test-->package
+分别对应：删除所有编译生成的文件。编译源码，编译测试源码。运行测试。打包为jar/war。
+maven的生命周期（lifecycle），由一系列阶段（phase）构成。
+例如，一个生命周期，可以包含clean，compile，test三个phase组成。有一些phase依赖于其他phase，有一些是独立的。例如，要执行test，就必须执行compile，要执行clean，就不需要执行任何其他的phase。
+使用maven构建项目，就是执行指定的phase。
+例如，mvn compile就是执行compile这个phase，mvn clean test将执行clean，compile，test这些phase。
+mvn执行一个phase又会触发一个或者多个goal，例如compile这个phase，对应执行的goal为compiler：compile。test这个phase为compiler：testcompile，surefile：test。
+maven的lifecycle，phase，goal。使用maven构建项目就是执行lifecycle，执行lifecycle就是按照顺序执行一系列的phase，每执行一个phase，就是执行该phase绑定的若干goal，goal是最小任务单元。
+
+maven的lifecycle，phase，goal是三个基本的概念，我们使用maven构建项目，就是执行lifecycle，执行lifecycle就是按顺序执行一系列的phase，执行phase就是执行该phase绑定的若干个goal，goal是最小任务单元。 
+实际上mvn是调用不同的插件（plugin）来构建项目。
+当我们执行mvn compile这个phase的时候，maven本身不知道如何执行compile，是调用compiler这个插件来执行compile，compiler插件执行和compile关联的compiler:compile这个goal。
+mvn常用的标准插件。clean插件对应执行的phase为clean，compiler对应compile，surefire对应test，jar对应package。
+mvn的标准插件比如compiler是自带的无需声明，当我们需要另外的插件时候，需要在pom文件中声明。
+例如需要创建一个可执行的jar包，同时把所有依赖的jar包打包到自己最终生成的这个jar包里，就可以使用maven-shade-plugin这个插件。
+
+maven的仓库：在Maven中，任何一个依赖、插件或者项目构建的输出，都可以称之为构件。Maven在某个统一的位置存储所有项目的共享的构件，这个统一的位置，我们就称之为仓库。（仓库就是存放依赖和插件的地方）
+maven的仓库只有两大类：
+1.本地仓库，顾名思义，就是Maven在本地存储构件的地方。
+注：maven的本地仓库，在安装maven后并不会创建，它是在第一次执行maven命令的时候才被创建
+maven本地仓库的默认位置：无论是Windows还是Linux，在用户的目录下都有一个.m2/repository/的仓库目录，这就是Maven仓库的默认位置
+如何更改maven默认的本地仓库的位置：这里要引入一个新的元素：localRepository，它是存在于maven的settings.xml文件中。
+工程使用仓库配置的优先级顺序，应该是pom>用户级别>全局级别
+2.远程仓库，在远程仓库中又分成了3种
+2.1 中央仓库
+最核心的中央仓库，中央仓库是默认的远程仓库，maven在安装的时候，自带的就是中央仓库的配置
+2.2 私服
+私服是一种特殊的远程仓库，它是架设在局域网内的仓库服务，私服代理广域网上的远程仓库，供局域网内的Maven用户使用。当Maven需要下载构件的时候，它从私服请求，如果私服上不存在该构件，则从外部的远程仓库下载，缓存在私服上之后，再为Maven的下载请求提供服务。我们还可以把一些无法从外部仓库下载到的构件上传到私服上。
+2.3 其它公共库
