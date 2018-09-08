@@ -12,4 +12,10 @@ mac下启动tomcat日志显示
 <Context path="/maxfranks" docBase="/Users/maxfranks/eclipse-workspace/j2ee/web" debug="0" reloadable="true" />
 <Context docBase="/Users/maxfranks/Downloads/CustomerManagement-master/CustomerManagement_for_Eclipse/CustomerManagement" path="/CustomerManagement" reloadable="true" source="org.eclipse.jst.jee.server:CustomerManagement"/>
 </Host>
-在这个host中，name=localhost，里面有两个context代表你部署的应用，path代表你的访问路径，默认是/，但是因为/被root所占去了，所以我们可以把它改为其他的名称，docbase就是你的项目所在路径，注意，tomcat去找一个项目，那么你的项目下根目录必须要有一个WEB-INF，比如j2ee这个项目，由eclipse创建，他下面有src，web两个文件夹，web下面是WEB-INF，所以你部署的项目不是部署eclipse的j2ee这个文件夹，而是j2ee里面的web文件夹。也就是/Users/maxfranks/eclipse-workspace/j2ee/web。这样子他会去这个web目录下找WEB-INF，接着找到web.xml，然后根据你输入的路径，再结合web.xml里面的配置url-pattern来查找相应的servlet-name等一系列后续操作。
+
+在这个host中，name=localhost，里面有两个context代表你部署的应用，path代表你的访问路径，默认是/，但是因为/被root所占去了，所以我们可以把它改为其他的名称，docbase就是你的项目所在路径，注意，tomcat去找一个项目，那么你的项目下根目录必须要有一个WEB-INF，比如j2ee这个项目，由eclipse创建，他下面有src，web两个文件夹，web下面是WEB-INF，所以你部署的项目不是部署eclipse的j2ee这个文件夹，而是j2ee里面的web文件夹。也就是/Users/maxfranks/eclipse-workspace/j2ee/web。这样子他会去这个web目录下找WEB-INF，接着找到web.xml，然后根据你输入的路径，再结合web.xml里面的配置url-pattern来查找相应的servlet-name，servlet-class等一系列后续操作。
+
+比如我访问localhost:8080/maxfranks/login.html
+他根据maxfranks，找到了/Users/maxfranks/eclipse-workspace/j2ee/web，地址后面就是直接打开了login.html，填写好东西输入submit提交的时候，action是login，根据项目里WEB-INF里的web.xml，找到了对应的loginservlet，然后运行，就是打印在了tomcat的控制台。
+或者访问了localhost:8080/maxfranks/hello
+他根据maxfranks，找到了/Users/maxfranks/eclipse-workspace/j2ee/web，地址后面的hello，根据项目里WEB-INF里的web.xml，找到对应的helloservlet，然后运行输出在了页面上。
