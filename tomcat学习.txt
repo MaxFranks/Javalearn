@@ -1,0 +1,15 @@
+tomcat学习
+mac下启动tomcat日志显示
+采用 ./startup.sh 启动，则没有显示控制台。
+要像windows一样显示日志信息，则./catalina.sh run
+
+下载好tomcat到指定并且部署好之后，打开localhost地址应该就能看到tomcat的主页面了。在tomcat主页，logs文件夹有运行的一些日志。
+我们看conf文件夹下一个server.xml这个文件。这个文件是用来部署应用。
+比如我们安装好，打开首页，默认就是加载webroot下面的root文件夹。在这个server.xml文件的下面，有一些参数。
+
+<Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+<Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
+<Context path="/maxfranks" docBase="/Users/maxfranks/eclipse-workspace/j2ee/web" debug="0" reloadable="true" />
+<Context docBase="/Users/maxfranks/Downloads/CustomerManagement-master/CustomerManagement_for_Eclipse/CustomerManagement" path="/CustomerManagement" reloadable="true" source="org.eclipse.jst.jee.server:CustomerManagement"/>
+</Host>
+在这个host中，name=localhost，里面有两个context代表你部署的应用，path代表你的访问路径，默认是/，但是因为/被root所占去了，所以我们可以把它改为其他的名称，docbase就是你的项目所在路径，注意，tomcat去找一个项目，那么你的项目下根目录必须要有一个WEB-INF，比如j2ee这个项目，由eclipse创建，他下面有src，web两个文件夹，web下面是WEB-INF，所以你部署的项目不是部署eclipse的j2ee这个文件夹，而是j2ee里面的web文件夹。也就是/Users/maxfranks/eclipse-workspace/j2ee/web。这样子他会去这个web目录下找WEB-INF，接着找到web.xml，然后根据你输入的路径，再结合web.xml里面的配置url-pattern来查找相应的servlet-name等一系列后续操作。
