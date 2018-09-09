@@ -1,0 +1,3 @@
+servlet学习
+当我们输入网址进入一个页面，点击了一个按钮，比如他的action是一个add，那他会去web.xml下面找到pattern为add的servlet，然后执行对应的servlet。
+一共三部分，需要一个用传来的action，根据action找servlet，执行servlet返回给用户。
