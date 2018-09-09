@@ -1,3 +1,9 @@
 servlet学习
 当我们输入网址进入一个页面，点击了一个按钮，比如他的action是一个add，那他会去web.xml下面找到pattern为add的servlet，然后执行对应的servlet。
 一共三部分，需要一个用传来的action，根据action找servlet，执行servlet返回给用户。
+
+一个tomcat的项目结构大概：（参考servletdemo项目）
+web和src两个目录。
+src存放java文件。
+web目录下有WEB-INF文件夹，还有各种网页，比如jsp或者html，或者项目的文件夹。
+WEB-INF文件夹里面有lib存放jar包，classes存放class文件，还有一个web.xml指向各种servlet。
