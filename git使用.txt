@@ -20,3 +20,12 @@ git remote add origin git@github.com:MaxFranks/Javalearn.git这个命令，可�
 git add 添加文件
 git commit -m "注释" 提交文件添加注释
 git merge dev 合并到dev分支
+
+Pull 提示 refusing to merge unrelated histories
+解决方法：
+git pull --allow-unrelated-histories  
+意思：
+allow merging unrelated histories
+原因：
+在网页新建项目后，本地项目和托管项目是完全两个不通的项目
+
