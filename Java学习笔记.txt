@@ -82,3 +82,39 @@ double x = abs(-123.45);//自定义一个abs方法为取绝对值。
 assert x >= 0 : "x must >= 0 but x = " +x;//因为这里x取了绝对值，所以都能通过，没有异常，如果x是负数，就会触发assertion异常。
 Java的日志：logging，为了取代sysout方法，可以设置输出样式，级别，禁止输出某些级别，可以被重定向到文件，可以按包名控制级别。sysout无法做到这些。
 jdk内置了java.util.logging，但是这个日志系统用的很少，更常用的是commonslogging。
+
+
+io简介：
+input指从外部读入数据到内存，例如，读文件，从网络读取等。为什么要把数据读入到内存中去呢？因为代码是在内存中运行的。
+从代码来看，就是。
+byte[] data = new byte[1024];
+read(data);
+process(data);
+output和input相反，是把数据从内存输出到外部，例如，写文件，输出到网络。
+
+io流是一种顺序读写数据的模式，其表现如下，
+1数据是单向流动的。2以byte为最小单位（字节流）。
+二进制数据以byte为最小单位在inputstream和outputstream中单向流动。
+
+如果字符不是单字节表示的ascii：
+Java提供了reader和writer表示字符流，字符流传输的最小数据单位是char，字符流输出的byte取决于编码方式。
+字符数据以char为最小单位在reader和writer中单向流动。
+
+如果数据源不是文本，只能使用inputstream，如果是文本，使用reader更方便一些。
+
+同步io：读写io时候代码等数据返回后才继续执行后续代码，代码编写简单，cpu执行效率低。
+异步io：读写io时候仅发出请求，然后立刻执行后续代码，代码编写复杂，cpu执行效率高。
+jdk提供的java.io是同步io，java.nio是异步io。
+
+file对象：
+创建file对象本身不涉及io操作，
+获取路径，绝对路径，规范路径，/getpath/getabsolutepath/getcanonicalpath
+可以获取目录的文件和子目录。
+通过file对象可以创建或删除文件或目录。
+
+inputstream：
+java.io.inputstream是所有输入类的超类。
+abstract int read：读取下一个字节，并返回字节（0～255），如果已经读到末尾，返回-1。
+int read(byte[] b)：读取若干字节并填充到byte[]数组，返回读取到字节数。
+int read(byte[],int off,int len)：指定byte[]数组的偏移量和最大填充数。
+void close（），关闭输入流。
