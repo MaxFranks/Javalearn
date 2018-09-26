@@ -1,0 +1,26 @@
+Java数组
+三种定义数组的方式：
+int[] ns = {1,2,3};
+int[] ns2 = new int[3];
+int[] ns3 = new int[]{1,2,3};
+
+for循环可以遍历数组，for(;;)循环可以通过下标遍历数组，for each循环可以直接遍历数组元素。
+直接打印数组变量，得到的是数组在jvm中的引用地址。
+for each循环打印也很麻烦。
+int[] = ns = {1,2,3,4};
+for(int n : ns){
+	System.out.print(n);
+}
+可以利用Arrays.toString方法快速打印数组内容。
+冒泡排序：
+		for(int x = 0; x < ns.length; x++) {
+			for(int y = x+1;y < ns.length; y++) {
+				int tmp;
+				if(ns[x] > ns[y]) {
+					tmp = ns[y];
+					ns[y] = ns[x];
+					ns[x] = tmp;
+				}
+			}
+		}
+对一组数组，进行从小到大的排序。先取第一位，然后和后面的每位数依次对比，小的留住，再取第二位，和后面的数对比，小的留住。以此类推，最后会修改数组本身，变成一个从小到大排序的数组。
