@@ -1,0 +1,7 @@
+Java集合
+一个Java对象可以在内部持有若干其他Java对象，并对外提供访问接口，我们把这种Java对象称为集合：
+Java的数组可以看作是一个集合：
+比如String[] ss = new String[10];//可以持有10个string对象
+ss[0] = "hello";//可以放入string对象
+String first = ss[0];//可以获取string对象。
+有了数组为什么还需要其他的集合类呢？ 
